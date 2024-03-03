@@ -1,17 +1,15 @@
 import "./App.css";
-import { Box, Container, Text } from "@radix-ui/themes";
+import { Box, Container } from "@radix-ui/themes";
+import Header from "./components/Header";
+import WithdrawCard from "./components/WithdrawCard";
 
 function App() {
     return (
         <Box>
             <Container>
-                <header>
-                    <Box>Header</Box>
-                </header>
-                <main>
-                    <Text className="text-3xl font-bold underline">
-                        Hello world!
-                    </Text>
+                <Header />
+                <main className="mt-12 w-full flex justify-center">
+                    <WithdrawCard />
                 </main>
             </Container>
         </Box>
