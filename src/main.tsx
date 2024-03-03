@@ -4,11 +4,14 @@ import App from "./App.tsx";
 import "./index.css";
 import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
+import { WagmiContextProvider } from "./connection/index.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
         <Theme>
-            <App />
+            <WagmiContextProvider>
+                <App />
+            </WagmiContextProvider>
         </Theme>
     </React.StrictMode>
 );
