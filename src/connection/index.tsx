@@ -38,6 +38,10 @@ createWeb3Modal({
     projectId,
     enableAnalytics: false, // Optional - defaults to your Cloud configuration
     themeMode: "light",
+    themeVariables: {
+        "--w3m-accent": "#5A1A6B",
+        "--w3m-border-radius-master": "18",
+    },
 });
 
 export function WagmiContextProvider({ children }: { children: ReactNode }) {
