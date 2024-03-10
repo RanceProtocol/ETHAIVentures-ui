@@ -2,10 +2,10 @@ import { createWeb3Modal } from "@web3modal/wagmi/react";
 import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
 
 import { WagmiProvider } from "wagmi";
-import { mainnet } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode } from "react";
 import envVars from "../configs/envVars";
+import { supportedChain } from "../configs";
 
 // 0. Setup queryClient
 const queryClient = new QueryClient();
@@ -21,8 +21,8 @@ const metadata = {
     icons: ["https://avatars.githubusercontent.com/u/37784886"],
 };
 
-const chains = [mainnet] as const;
-const config = defaultWagmiConfig({
+const chains = [supportedChain] as const;
+export const config = defaultWagmiConfig({
     chains, // required
     projectId, // required
     metadata, // required
