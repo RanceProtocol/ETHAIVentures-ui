@@ -4,7 +4,7 @@ import { ChangeEvent, useCallback, useState } from "react";
 import { escapeRegExp, inputRegex, isSupportedChain } from "../utils";
 import { maxAmount, minGasFee, supportedChain } from "../configs";
 import useWithdraw from "../hooks/useWithdraw";
-import { BaseError, useAccount } from "wagmi";
+import { useAccount } from "wagmi";
 import { toast } from "react-toastify";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { config } from "../connection";
@@ -34,7 +34,7 @@ const WithdrawCard = () => {
     };
     const handleMaxClick = () => setUsdtAmountInput(maxAmount);
 
-    const { withdraw, error } = useWithdraw(gasFeeAmountInput);
+    const { withdraw } = useWithdraw(gasFeeAmountInput);
 
     const confirmWithdrawal = useCallback(async () => {
         if (!isConnected)
@@ -46,7 +46,7 @@ const WithdrawCard = () => {
                 `You are connected to a wrong network, You should connect to ${supportedChain.name}`
             );
         if (Number(gasFeeAmountInput) < Number(minGasFee))
-            return toast.error(`Minimum required fas fee is  ${minGasFee}`);
+            return toast.error(`Minimum required gas fee is  ${minGasFee}`);
         try {
             setIsPending(true);
             const hash = await withdraw();
@@ -61,18 +61,28 @@ const WithdrawCard = () => {
             } else {
                 toast.error("Withdrawal failed!!");
             }
-        } catch (err: any) {
-            console.log(err);
+        } catch (error: any) {
+            let errorText;
+            if (error?.message.includes("User rejected the request.")) {
+                errorText = "You rejected the transaction";
+            } else if (
+                error?.message.includes(
+                    "transaction exceeds the balance of the account"
+                )
+            ) {
+                errorText = "Insufficient balance to pay for this transaction";
+            } else if (error?.message.includes("Invalid Amount")) {
+                errorText = `Minimum required gas fee is  ${minGasFee}`;
+            } else if (error?.message.includes("not approved to deposit")) {
+                errorText = `You need to be approved before you can withdraw`;
+            }
 
-            toast.error(
-                (error as BaseError).shortMessage ||
-                    err?.message ||
-                    "Something went wrong"
-            );
+            toast.error(errorText || "An error occured!");
         } finally {
+            setIsPending(false);
             setIsConfirming(false);
         }
-    }, [chainId, error, gasFeeAmountInput, isConnected, withdraw]);
+    }, [chainId, gasFeeAmountInput, isConnected, withdraw]);
 
     return (
         <>
@@ -83,17 +93,15 @@ const WithdrawCard = () => {
                 <Box>
                     <Box className="w-full">
                         <Flex justify="between">
-                            <Text>Amount</Text>
-                            <Text className="text-gray-400">
-                                Allocated Balance: 50,000 USDT
-                            </Text>
+                            <Text>Allocated Balance:</Text>
+                            <Text className="text-gray-400">500,000 USDT</Text>
                         </Flex>
-                        <Box my="2" className="relative w-full h-10">
-                            <span className="absolute translate-x-2 translate-y-3 text-gray-500">
-                                $
+                        <Box my="2" className="relative w-full h-[50px] p-0">
+                            <span className="absolute translate-x-2 h-[50px] flex items-center">
+                                <span className="text-gray-500">USDT</span>
                             </span>
                             <input
-                                className="w-full h-full border-1 border-solid border border-gray-300 outline-purple-400 rounded py-6 px-5 font-semibold"
+                                className="w-full h-full border-1 border-solid border border-gray-300 outline-purple-400 rounded py-6 px-5 pl-14 font-semibold"
                                 type="text"
                                 inputMode="decimal"
                                 autoComplete="off"
@@ -107,16 +115,14 @@ const WithdrawCard = () => {
                                 onChange={handleUsdtAmountChange}
                             />
                             <button
-                                className="font-semibold absolute right-0 -translate-x-2 translate-y-3 text-sm text-[#5A1A6B]"
+                                className="absolute right-0 top-0 -translate-x-2 h-[50px] flex items-center"
                                 onClick={handleMaxClick}
                             >
-                                MAX
+                                <span className="font-semibold text-sm text-[#5A1A6B]">
+                                    MAX
+                                </span>
                             </button>
                         </Box>
-                        <Flex mt="6" justify="between">
-                            <Text>Estimate gas fee</Text>
-                            <Text>0.000134ETH</Text>
-                        </Flex>
                         <Box mt="9">
                             <button
                                 onClick={() => setModalOpen(true)}

@@ -32,9 +32,9 @@ const ConfirmationModal = ({
                         <Text className="text-black">enter your gas fee</Text>
                     </Flex>
                     <Text className="text-gray-400">Gas fee</Text>
-                    <Box my="2" className="relative w-full h-10">
-                        <span className="absolute translate-x-2 translate-y-3 text-gray-500">
-                            ETH
+                    <Box my="2" className="relative w-full h-[50px] p-0">
+                        <span className="absolute translate-x-2 h-[50px] flex items-center">
+                            <span className="text-gray-500">ETH</span>
                         </span>
                         <input
                             className="w-full h-full border-1 border-solid border border-gray-300 outline-purple-400 rounded py-6 px-5 pl-10 font-semibold"
