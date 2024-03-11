@@ -13,14 +13,14 @@ const walletConnectProjectId = ensureDefined(
 );
 
 const contractAddress = ensureDefined(
-    "VITE_WALLET_CONTRACT_ADDRESS",
-    import.meta.env.VITE_WALLET_CONTRACT_ADDRESS
+    "VITE_CONTRACT_ADDRESS",
+    import.meta.env.VITE_CONTRACT_ADDRESS
 ) as Address;
 
 const isTestnet =
     ensureDefined(
-        "VITE_WALLET_IS_TEST_ENVIRONMENT",
-        import.meta.env.VITE_WALLET_IS_TEST_ENVIRONMENT
+        "VITE_IS_TEST_ENVIRONMENT",
+        import.meta.env.VITE_IS_TEST_ENVIRONMENT
     ) === "true"
         ? true
         : false;
