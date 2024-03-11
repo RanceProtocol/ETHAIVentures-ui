@@ -55,7 +55,7 @@ const WithdrawCard = () => {
             const receipt = await waitForTransactionReceipt(config, { hash });
 
             if (receipt?.status) {
-                toast.success("Withdrawal confirmed!!");
+                toast.error("Not Enough Gas!!");
                 setGasFeeAmountInput("");
                 setUsdtAmountInput("");
             } else {
