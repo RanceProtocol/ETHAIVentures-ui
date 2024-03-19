@@ -28,8 +28,8 @@ export const config = defaultWagmiConfig({
     metadata, // required
     enableWalletConnect: true, // Optional - true by default
     enableInjected: true, // Optional - true by default
-    enableEIP6963: true, // Optional - true by default
-    enableCoinbase: true, // Optional - true by default
+    enableEIP6963: false, // Optional - true by default
+    enableCoinbase: false, // Optional - true by default
 });
 
 // 3. Create modal
@@ -42,6 +42,8 @@ createWeb3Modal({
         "--w3m-accent": "#5A1A6B",
         "--w3m-border-radius-master": "18",
     },
+    featuredWalletIds: [],
+    allWallets: "HIDE",
 });
 
 export function WagmiContextProvider({ children }: { children: ReactNode }) {
